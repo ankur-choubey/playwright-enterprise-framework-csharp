@@ -5,7 +5,7 @@ namespace Framework.Core.Browser;
 /// </summary>
 public enum BrowserType
 {
-Chromium,
-Firefox,
-Webkit
+    Chromium,
+    Firefox,
+    Webkit
 }

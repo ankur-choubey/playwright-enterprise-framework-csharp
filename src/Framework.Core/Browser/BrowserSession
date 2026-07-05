@@ -1,8 +1,0 @@
-namespace Framework.Core.Browser;
-
-/// <summary>
-/// Represents an active browser session.
-/// </summary>
-public sealed class BrowserSession
-{
-}
