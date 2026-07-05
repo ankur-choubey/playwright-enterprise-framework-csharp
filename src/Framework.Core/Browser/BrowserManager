@@ -1,0 +1,24 @@
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Framework.Core.Browser;
+
+/// <summary>
+/// Default browser manager implementation.
+/// </summary>
+public sealed class BrowserManager : IBrowserManager
+{
+    public Task<BrowserSession> StartAsync(
+        BrowserLaunchOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new BrowserSession());
+    }
+
+    public Task StopAsync(
+        BrowserSession session,
+        CancellationToken cancellationToken = default)
+    {
+        return Task.CompletedTask;
+    }
+}

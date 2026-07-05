@@ -22,3 +22,19 @@ The framework follows a layered architecture where each project has a single res
 - Framework.UI
 - Framework.API
 - Framework.Reporting
+
+## Browser Layer
+
+The browser layer abstracts browser lifecycle management from the underlying automation library.
+
+Current responsibilities:
+
+- Browser startup
+- Browser shutdown
+- Session lifecycle
+
+Future responsibilities:
+
+- Browser context management
+- Page lifecycle
+- Parallel execution support
