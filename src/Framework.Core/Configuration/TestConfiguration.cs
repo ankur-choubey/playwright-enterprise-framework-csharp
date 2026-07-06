@@ -32,4 +32,7 @@ public sealed class TestConfiguration
     /// </summary>
     public int SlowMo { get; init; } = 0;
 
+    public required string Username { get; init; }
+
+    public required string Password { get; init; }
 }

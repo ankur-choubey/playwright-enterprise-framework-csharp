@@ -22,7 +22,9 @@ public sealed class JsonConfigurationProvider : IConfigurationProvider
             Headless = bool.Parse(configuration[ConfigurationKeys.Headless]!),
             DefaultTimeout = TimeSpan.FromSeconds(
                 int.Parse(configuration[ConfigurationKeys.DefaultTimeout]!)),
-            SlowMo = int.Parse(configuration[ConfigurationKeys.SlowMo]!)
+            SlowMo = int.Parse(configuration[ConfigurationKeys.SlowMo]!),
+            Username = configuration[ConfigurationKeys.Username]!,
+            Password = configuration[ConfigurationKeys.Password]!,
         };
 
         return settings;

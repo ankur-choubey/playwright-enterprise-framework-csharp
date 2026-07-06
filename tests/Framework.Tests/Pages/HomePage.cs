@@ -12,6 +12,9 @@ public sealed class HomePage : BasePage
     {
     }
 
+    private ILocator InventoryContainer =>
+       Page.Locator("#inventory_container").First;
+
     /// <summary>
     /// Gets the page title.
     /// </summary>
@@ -21,10 +24,10 @@ public sealed class HomePage : BasePage
     }
 
     /// <summary>
-    /// Determines whether the page has loaded.
+    /// Determines whether the home page is loaded. 
     /// </summary>
     public async Task<bool> IsLoadedAsync()
     {
-        return await GetTitleAsync() == "Swag Labs";
+        return await InventoryContainer.IsVisibleAsync();
     }
 }

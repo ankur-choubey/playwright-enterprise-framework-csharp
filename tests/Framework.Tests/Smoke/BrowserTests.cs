@@ -1,5 +1,6 @@
 using Framework.Core.Browser;
 using Framework.Tests.Base;
+using Framework.Tests.Pages;
 
 namespace Framework.Tests.Smoke;
 
@@ -22,13 +23,14 @@ public class BrowserTests : BaseTest
     [Test]
     public async Task Should_Navigate_To_Home_Page()
     {
-
         await NavigationService.NavigateToHomePageAsync(
             BrowserSession,
             Configuration.BaseUrl);
 
+        HomePage homePage = new(BrowserSession.Page);
+
         Assert.That(
-            BrowserSession.Page.Url,
-            Is.EqualTo(Configuration.BaseUrl.ToString()));
+            await homePage.IsLoadedAsync(),
+            Is.True);
     }
 }
