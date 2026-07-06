@@ -1,22 +1,30 @@
 using Framework.Core.Configuration;
-using NUnit.Framework;
 
 namespace Framework.Tests.Smoke;
 
 [TestFixture]
 public class ConfigurationTests
 {
+    private static readonly IConfigurationProvider ConfigurationProvider =
+        new JsonConfigurationProvider();
+    private TestConfiguration Configuration = null!;
+
     [Test]
     public void Should_Load_Configuration()
     {
-        IConfigurationProvider provider = new JsonConfigurationProvider();
-
-        TestConfiguration configuration = provider.Load();
-
-        Assert.Multiple(() =>
+        try
         {
-            Assert.That(configuration.BaseUrl, Is.Not.Null);
-            Assert.That(configuration.Browser, Is.EqualTo(Core.Browser.BrowserType.Chromium));
-        });
+            Configuration = ConfigurationProvider.Load();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(Configuration.BaseUrl, Is.Not.Null);
+                Assert.That(Configuration.Browser, Is.EqualTo(Core.Browser.BrowserType.Chromium));
+            });
+        }
+        finally
+        {
+            // Cleanup if needed
+        }
     }
 }

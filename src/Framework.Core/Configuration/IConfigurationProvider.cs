@@ -5,5 +5,5 @@ namespace Framework.Core.Configuration;
 /// </summary>
 public interface IConfigurationProvider
 {
-TestConfiguration Load();
+    TestConfiguration Load();
 }
