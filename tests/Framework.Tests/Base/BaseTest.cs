@@ -35,11 +35,15 @@ public abstract class BaseTest
     protected readonly ScreenshotService ScreenshotService =
     new();
 
+    protected readonly TraceService TraceService = new();
+
     [SetUp]
     public async Task SetUp()
     {
         BrowserSession =
             await BrowserManager.StartAsync(BrowserOptions);
+
+        await TraceService.StartAsync(BrowserSession.Context);
     }
 
     [TearDown]
@@ -47,13 +51,19 @@ public abstract class BaseTest
     {
         try
         {
-            if (TestContext.CurrentContext.Result.Outcome.Status
-                == TestStatus.Failed)
+            if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
+                {
+                    await ScreenshotService.CaptureAsync(
+                        BrowserSession.Page,
+                        TestContext.CurrentContext.Test.Name);
+
+                    await TraceService.StopAsync(
+                        BrowserSession.Context,
+                        TestContext.CurrentContext.Test.Name);
+                }
+            else
             {
-                Console.WriteLine("Taking screenshot...");
-                await ScreenshotService.CaptureAsync(
-                    BrowserSession.Page,
-                    TestContext.CurrentContext.Test.Name);
+                await BrowserSession.Context.Tracing.StopAsync();
             }
         }
         finally
