@@ -1,3 +1,4 @@
+using Framework.Common.Logging;
 using Microsoft.Playwright;
 
 namespace Framework.Tests.Services;
@@ -7,8 +8,24 @@ namespace Framework.Tests.Services;
 /// </summary>
 public sealed class TraceService
 {
+    private readonly ILogger _logger;
+
+    public TraceService(ILogger logger)
+    {
+        _logger = logger;
+    }
+
+    /// <summary>
+    /// Starts Playwright tracing for the given browser context.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
     public async Task StartAsync(IBrowserContext context)
     {
+         _logger.Log(
+            LogLevel.Information,
+            "Starting Playwright tracing.");
+
         await context.Tracing.StartAsync(new()
         {
             Screenshots = true,
@@ -17,12 +34,18 @@ public sealed class TraceService
         });
     }
 
+    /// <summary>
+    /// Stops Playwright tracing and saves the trace data to a file.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="testName"></param>
+    /// <returns></returns>
     public async Task StopAsync(
         IBrowserContext context,
         string testName)
     {
         string traceDirectory = Path.Combine(
-            TestContext.CurrentContext.WorkDirectory,
+            AppContext.BaseDirectory,
             "TestResults",
             "Traces");
 
@@ -32,9 +55,31 @@ public sealed class TraceService
             traceDirectory,
             $"{testName}_{DateTime.Now:yyyyMMdd_HHmmss}.zip");
 
+       _logger.Log(
+            LogLevel.Information,
+            $"Saving trace to '{tracePath}'.");
+
         await context.Tracing.StopAsync(new()
         {
             Path = tracePath
         });
+
+        _logger.Log(
+            LogLevel.Information,
+            $"Trace saved to '{tracePath}'.");
+    }
+
+    /// <summary>
+    /// Stops Playwright tracing without saving the trace data.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    public async Task StopAsync(IBrowserContext context)
+    {
+       _logger.Log(
+            LogLevel.Information,
+            "Stopping Playwright tracing without saving.");
+
+        await context.Tracing.StopAsync();
     }
 }

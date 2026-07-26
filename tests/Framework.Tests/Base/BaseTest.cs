@@ -3,6 +3,7 @@ using Framework.Core.Configuration;
 using Framework.Core.Navigation;
 using NUnit.Framework.Interfaces;
 using Framework.Tests.Services;
+using Framework.Common.Logging;
 
 namespace Framework.Tests.Base;
 
@@ -32,16 +33,30 @@ public abstract class BaseTest
 
     protected BrowserSession BrowserSession = null!;
 
-    protected readonly ScreenshotService ScreenshotService =
-    new();
-
-    protected readonly TraceService TraceService = new();
-
+    protected static readonly ILogger Logger = new ConsoleLogger();
+    protected readonly ScreenshotService ScreenshotService;
+    protected readonly TraceService TraceService;
+    
+    protected BaseTest()
+    {
+        ScreenshotService = new ScreenshotService(Logger);
+        TraceService = new TraceService(Logger);
+    }
+    
     [SetUp]
     public async Task SetUp()
     {
+
+        Logger.Log(
+            LogLevel.Information,
+            $"Starting test: {TestContext.CurrentContext.Test.Name}");
+
         BrowserSession =
             await BrowserManager.StartAsync(BrowserOptions);
+
+        Logger.Log(
+            LogLevel.Information,
+            $"Browser started: {Configuration.Browser}");
 
         await TraceService.StartAsync(BrowserSession.Context);
     }
@@ -53,6 +68,10 @@ public abstract class BaseTest
         {
             if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
                 {
+                    Logger.Log(
+                        LogLevel.Error,
+                        "Test failed. Capturing artifacts.");
+
                     await ScreenshotService.CaptureAsync(
                         BrowserSession.Page,
                         TestContext.CurrentContext.Test.Name);
@@ -63,8 +82,12 @@ public abstract class BaseTest
                 }
             else
             {
-                await BrowserSession.Context.Tracing.StopAsync();
+                await TraceService.StopAsync(BrowserSession.Context);;
             }
+
+            Logger.Log(
+                LogLevel.Information,
+                $"Finished test: {TestContext.CurrentContext.Test.Name}");
         }
         finally
         {
