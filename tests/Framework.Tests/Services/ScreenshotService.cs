@@ -16,6 +16,16 @@ public sealed class ScreenshotService
         _logger = logger;
     }
 
+    private static string SanitizeFileName(string fileName)
+    {
+        foreach (char invalidChar in Path.GetInvalidFileNameChars())
+        {
+            fileName = fileName.Replace(invalidChar, '_');
+        }
+
+        return fileName;
+    }
+
     /// <summary>
     /// Captures a screenshot of the given page and saves it to a file.
     /// </summary>
@@ -34,9 +44,11 @@ public sealed class ScreenshotService
 
         Directory.CreateDirectory(screenshotDirectory);
 
+        string safeTestName = SanitizeFileName(testName);
+
         string filePath = Path.Combine(
             screenshotDirectory,
-            $"{testName}_{DateTime.Now:yyyyMMdd_HHmmss}.png");
+            $"{safeTestName}_{DateTime.Now:yyyyMMdd_HHmmss}.png");
 
         _logger.Log(
             LogLevel.Information,

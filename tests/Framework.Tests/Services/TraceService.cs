@@ -15,6 +15,16 @@ public sealed class TraceService
         _logger = logger;
     }
 
+    private static string SanitizeFileName(string fileName)
+    {
+        foreach (char invalidChar in Path.GetInvalidFileNameChars())
+        {
+            fileName = fileName.Replace(invalidChar, '_');
+        }
+
+        return fileName;
+    }
+
     /// <summary>
     /// Starts Playwright tracing for the given browser context.
     /// </summary>
@@ -51,9 +61,11 @@ public sealed class TraceService
 
         Directory.CreateDirectory(traceDirectory);
 
+        string safeTestName = SanitizeFileName(testName);
+        
         string tracePath = Path.Combine(
             traceDirectory,
-            $"{testName}_{DateTime.Now:yyyyMMdd_HHmmss}.zip");
+            $"{safeTestName}_{DateTime.Now:yyyyMMdd_HHmmss}.zip");
 
        _logger.Log(
             LogLevel.Information,
