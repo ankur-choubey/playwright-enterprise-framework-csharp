@@ -9,7 +9,7 @@ public sealed class LoginTests : BaseTest
     [Test]
     public async Task Should_Login_With_Valid_Credentials()
     {
-        await NavigationService.NavigateToHomePageAsync(
+        await NavigationService.NavigateToLoginPageAsync(
             BrowserSession,
             Configuration.BaseUrl);
 
@@ -21,12 +21,15 @@ public sealed class LoginTests : BaseTest
 
         var homePage = new HomePage(BrowserSession.Page);
 
-        Assert.That(
-            await homePage.IsLoadedAsync(),
-            Is.True);
+        bool isLoaded = await homePage.IsLoadedAsync();
 
-        Assert.That(
-            BrowserSession.Page.Url,
-            Does.Contain("/inventory.html"));       
+        Assert.Multiple(() =>
+        {
+            Assert.That(isLoaded, Is.True);
+
+            Assert.That(
+                BrowserSession.Page.Url,
+                Does.Contain("/inventory.html"));
+        });
     }
 }

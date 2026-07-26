@@ -21,16 +21,16 @@ public class BrowserTests : BaseTest
     }
 
     [Test]
-    public async Task Should_Navigate_To_Home_Page()
+    public async Task Should_Navigate_To_Login_Page()
     {
-        await NavigationService.NavigateToHomePageAsync(
+        await NavigationService.NavigateToLoginPageAsync(
             BrowserSession,
             Configuration.BaseUrl);
 
-        HomePage homePage = new(BrowserSession.Page);
+        var loginPage = new LoginPage(BrowserSession.Page);
 
         Assert.That(
-            await homePage.IsLoadedAsync(),
+            await loginPage.IsLoadedAsync(),
             Is.True);
     }
 }

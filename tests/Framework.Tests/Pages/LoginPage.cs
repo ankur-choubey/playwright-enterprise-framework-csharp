@@ -21,6 +21,11 @@ public sealed class LoginPage : BasePage
     private ILocator LoginButton =>
         Page.Locator("#login-button");
 
+    public async Task<bool> IsLoadedAsync()
+    {
+        return await LoginButton.IsVisibleAsync();
+    }
+
     public async Task LoginAsync(
         string username,
         string password)

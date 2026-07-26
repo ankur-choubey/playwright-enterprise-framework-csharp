@@ -6,9 +6,9 @@ namespace Framework.Core.Navigation;
 public interface INavigationService
 {
     /// <summary>
-    /// Navigates to the configured application home page.
+    /// Navigates to the configured application login page.
     /// </summary>
-    Task NavigateToHomePageAsync(
+    Task NavigateToLoginPageAsync(
         Browser.BrowserSession session,
         Uri baseUrl,
         CancellationToken cancellationToken = default);

@@ -7,7 +7,7 @@ namespace Framework.Core.Navigation;
 /// </summary>
 public sealed class NavigationService : INavigationService
 {
-    public async Task NavigateToHomePageAsync(
+    public async Task NavigateToLoginPageAsync(
         BrowserSession session,
         Uri baseUrl,
         CancellationToken cancellationToken = default)

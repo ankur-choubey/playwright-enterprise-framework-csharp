@@ -1,6 +1,8 @@
 using Framework.Core.Browser;
 using Framework.Core.Configuration;
 using Framework.Core.Navigation;
+using NUnit.Framework.Interfaces;
+using Framework.Tests.Services;
 
 namespace Framework.Tests.Base;
 
@@ -30,6 +32,9 @@ public abstract class BaseTest
 
     protected BrowserSession BrowserSession = null!;
 
+    protected readonly ScreenshotService ScreenshotService =
+    new();
+
     [SetUp]
     public async Task SetUp()
     {
@@ -38,11 +43,25 @@ public abstract class BaseTest
     }
 
     [TearDown]
-    public async Task TearDown()
+    protected async Task TearDown()
     {
-        if (BrowserSession != null)
+        try
         {
-            await BrowserManager.StopAsync(BrowserSession);
+            if (TestContext.CurrentContext.Result.Outcome.Status
+                == TestStatus.Failed)
+            {
+                Console.WriteLine("Taking screenshot...");
+                await ScreenshotService.CaptureAsync(
+                    BrowserSession.Page,
+                    TestContext.CurrentContext.Test.Name);
+            }
+        }
+        finally
+        {
+            if (BrowserSession != null)
+            {
+                await BrowserManager.StopAsync(BrowserSession);
+            }
         }
     }
 }
