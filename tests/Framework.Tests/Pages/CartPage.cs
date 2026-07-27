@@ -84,4 +84,15 @@ public sealed class CartPage : BasePage
     {
         return await CartItems.CountAsync() == 0;
     }
+
+    /// <summary>
+    /// Navigates to the checkout information page.
+    /// </summary>
+    public async Task<CheckoutInformationPage> CheckoutAsync()
+    {
+        await ClickAsync(
+            CheckoutButton);
+
+        return new CheckoutInformationPage(Page);
+    }
 }
