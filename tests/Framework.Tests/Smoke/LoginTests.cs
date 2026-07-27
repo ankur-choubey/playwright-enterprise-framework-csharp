@@ -34,18 +34,12 @@ public sealed class LoginTests : BaseTest
             LoginUsers.Standard.Username,
             LoginUsers.Standard.Password);
 
-        var homePage = new HomePage(BrowserSession.Page);
+        var inventoryPage = new InventoryPage(BrowserSession.Page);
 
-        bool isLoaded = await homePage.IsLoadedAsync();
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(isLoaded, Is.True);
-
-            Assert.That(
-                BrowserSession.Page.Url,
-                Does.Contain("/inventory.html"));
-        });
+        Assert.That(
+            await inventoryPage.IsLoadedAsync(),
+            Is.True,
+            "The inventory page should be displayed after a successful login.");
     }
 
     [TestCaseSource(nameof(LoginFailureScenarios))]
