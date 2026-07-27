@@ -29,7 +29,7 @@ public sealed class LoginPage : BasePage
     /// </summary>
     public async Task<string> GetErrorMessageAsync()
     {
-        return await ErrorMessage.InnerTextAsync();
+         return await GetTextAsync(ErrorMessage);
     }
 
     /// <summary>
@@ -45,10 +45,14 @@ public sealed class LoginPage : BasePage
         string username,
         string password)
     {
-        await UserNameTextBox.FillAsync(username);
+        await FillAsync(
+            UserNameTextBox,
+            username);
 
-        await PasswordTextBox.FillAsync(password);
+        await FillAsync(
+            PasswordTextBox,
+            password);
 
-        await LoginButton.ClickAsync();
+        await ClickAsync(LoginButton);
     }
 }
