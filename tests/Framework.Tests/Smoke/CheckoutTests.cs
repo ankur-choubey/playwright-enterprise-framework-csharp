@@ -1,5 +1,8 @@
+using Allure.Net.Commons.Attributes;
+using Allure.NUnit;
 using Framework.Tests.Base;
 using Framework.Tests.TestData;
+
 namespace Framework.Tests.Smoke;
 
 /// <summary>
@@ -7,6 +10,7 @@ namespace Framework.Tests.Smoke;
 /// </summary>
 [TestFixture]
 [Category("Smoke")]
+[AllureNUnit]
 public sealed class CheckoutTests : BaseTest
 {
     /// <summary>

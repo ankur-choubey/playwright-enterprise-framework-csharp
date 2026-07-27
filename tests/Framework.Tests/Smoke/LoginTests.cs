@@ -1,3 +1,4 @@
+using Allure.NUnit;
 using Framework.Tests.Base;
 using Framework.Tests.Pages;
 using Framework.Tests.TestData;
@@ -7,6 +8,7 @@ namespace Framework.Tests.Smoke;
 
 [TestFixture]
 [Category("Smoke")]
+[AllureNUnit]
 public sealed class LoginTests : BaseTest
 {    
     public static IEnumerable<TestCaseData> LoginFailureScenarios()
