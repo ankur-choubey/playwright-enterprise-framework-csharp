@@ -4,6 +4,8 @@ using Framework.Core.Navigation;
 using NUnit.Framework.Interfaces;
 using Framework.Tests.Services;
 using Framework.Common.Logging;
+using Framework.Tests.Pages;
+using Framework.Tests.TestData.Users;
 
 namespace Framework.Tests.Base;
 
@@ -59,6 +61,22 @@ public abstract class BaseTest
             $"Browser started: {Configuration.Browser}");
 
         await TraceService.StartAsync(BrowserSession.Context);
+    }
+
+    /// <summary>
+    /// Logs in using the standard user and returns the inventory page.
+    /// </summary>
+    protected async Task<InventoryPage> LoginToInventoryAsync()
+    {
+        await NavigationService.NavigateToLoginPageAsync(
+            BrowserSession,
+            Configuration.BaseUrl);
+
+        var loginPage = new LoginPage(BrowserSession.Page);
+
+        return await loginPage.LoginAsync(
+            LoginUsers.Standard.Username,
+            LoginUsers.Standard.Password);
     }
 
     [TearDown]

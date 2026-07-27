@@ -12,9 +12,6 @@ public sealed class CheckoutOverviewPage : BasePage
     {
     }
 
-    private ILocator PageTitle =>
-        Page.Locator("[data-test='title']");
-
     private ILocator FinishButton =>
         Page.Locator("[data-test='finish']");
 

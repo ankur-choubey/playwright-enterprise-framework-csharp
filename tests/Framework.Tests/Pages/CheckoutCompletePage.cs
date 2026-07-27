@@ -16,9 +16,6 @@ public sealed class CheckoutCompletePage : BasePage
     {
     }
 
-    private ILocator PageTitle =>
-        Page.Locator("[data-test='title']");
-
     private ILocator CompleteHeader =>
         Page.Locator("[data-test='complete-header']");
 

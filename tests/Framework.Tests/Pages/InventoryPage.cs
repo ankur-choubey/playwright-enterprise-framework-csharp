@@ -16,9 +16,6 @@ public sealed class InventoryPage : BasePage
     {
     }
 
-    private ILocator ProductsTitle =>
-        Page.Locator("[data-test='title']");
-
     private ILocator ShoppingCartLink =>
     Page.Locator("[data-test='shopping-cart-link']");
 
@@ -37,7 +34,7 @@ public sealed class InventoryPage : BasePage
     /// </returns>
     public async Task<bool> IsLoadedAsync()
     {
-        return await ProductsTitle.IsVisibleAsync();
+        return await PageTitle.IsVisibleAsync();
     }
 
     /// <summary>

@@ -16,9 +16,6 @@ public sealed class CartPage : BasePage
     {
     }
 
-    private ILocator PageTitle =>
-        Page.Locator("[data-test='title']");
-
     private ILocator CartItems =>
         Page.Locator(".cart_item");
 

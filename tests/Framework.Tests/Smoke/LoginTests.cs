@@ -6,6 +6,7 @@ using Framework.Tests.TestData.Users;
 namespace Framework.Tests.Smoke;
 
 [TestFixture]
+[Category("Smoke")]
 public sealed class LoginTests : BaseTest
 {    
     public static IEnumerable<TestCaseData> LoginFailureScenarios()

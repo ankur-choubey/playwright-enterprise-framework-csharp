@@ -18,6 +18,12 @@ public abstract class BasePage
     protected IPage Page { get; }
 
     /// <summary>
+    /// Gets the common page title locator.
+    /// </summary>
+    protected ILocator PageTitle =>
+        Page.Locator("[data-test='title']");
+
+    /// <summary>
     /// Clicks the specified locator.
     /// </summary>
     /// <param name="locator">The locator to click.</param>

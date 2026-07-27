@@ -1,6 +1,5 @@
 using Framework.Tests.Base;
 using Framework.Tests.Pages;
-using Framework.Tests.TestData.Users;
 using Framework.Tests.TestData;
 
 namespace Framework.Tests.Smoke;
@@ -9,24 +8,9 @@ namespace Framework.Tests.Smoke;
 /// Contains smoke tests for the inventory page.
 /// </summary>
 [TestFixture]
+[Category("Smoke")]
 public sealed class InventoryTests : BaseTest
 {
-    /// <summary>
-    /// Logs in using the standard user and returns the inventory page.
-    /// </summary>
-    private async Task<InventoryPage> LoginToInventoryAsync()
-    {
-        await NavigationService.NavigateToLoginPageAsync(
-            BrowserSession,
-            Configuration.BaseUrl);
-
-        var loginPage = new LoginPage(BrowserSession.Page);
-
-        return await loginPage.LoginAsync(
-            LoginUsers.Standard.Username,
-            LoginUsers.Standard.Password);
-    }
-
     /// <summary>
     /// Verifies that a product can be added to the shopping cart.
     /// </summary>

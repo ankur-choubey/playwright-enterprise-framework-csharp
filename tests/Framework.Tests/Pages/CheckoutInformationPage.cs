@@ -14,10 +14,7 @@ public sealed class CheckoutInformationPage : BasePage
         : base(page)
     {
     }
-
-    private ILocator PageTitle =>
-        Page.Locator("[data-test='title']");
-
+    
     private ILocator FirstNameTextBox =>
         Page.Locator("[data-test='firstName']");
 

@@ -1,32 +1,14 @@
 using Framework.Tests.Base;
-using Framework.Tests.Pages;
 using Framework.Tests.TestData;
-using Framework.Tests.TestData.Users;
-
 namespace Framework.Tests.Smoke;
 
 /// <summary>
 /// Contains smoke tests for the checkout workflow.
 /// </summary>
 [TestFixture]
+[Category("Smoke")]
 public sealed class CheckoutTests : BaseTest
 {
-    /// <summary>
-    /// Logs in using the standard user and returns the inventory page.
-    /// </summary>
-    private async Task<InventoryPage> LoginToInventoryAsync()
-    {
-        await NavigationService.NavigateToLoginPageAsync(
-            BrowserSession,
-            Configuration.BaseUrl);
-
-        var loginPage = new LoginPage(BrowserSession.Page);
-
-        return await loginPage.LoginAsync(
-            LoginUsers.Standard.Username,
-            LoginUsers.Standard.Password);
-    }
-
     /// <summary>
     /// Verifies that a customer can successfully complete the checkout process.
     /// </summary>
