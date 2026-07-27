@@ -19,6 +19,15 @@ public sealed class InventoryPage : BasePage
     private ILocator ProductsTitle =>
         Page.Locator("[data-test='title']");
 
+    private ILocator ShoppingCartLink =>
+    Page.Locator("[data-test='shopping-cart-link']");
+
+    private ILocator ShoppingCartBadge =>
+        Page.Locator("[data-test='shopping-cart-badge']");
+
+    private ILocator SortDropdown =>
+        Page.Locator("[data-test='product-sort-container']");
+
     /// <summary>
     /// Determines whether the inventory page has loaded.
     /// </summary>
@@ -29,5 +38,72 @@ public sealed class InventoryPage : BasePage
     public async Task<bool> IsLoadedAsync()
     {
         return await ProductsTitle.IsVisibleAsync();
+    }
+
+    /// <summary>
+    /// Opens the shopping cart page.
+    /// </summary>
+    /// <returns></returns>
+    public async Task OpenShoppingCartAsync()
+    {
+        await ClickAsync(ShoppingCartLink);
+    }
+
+    /// <summary>
+    /// Determines whether the shopping cart badge is visible.
+    /// </summary>
+    /// <returns></returns>
+    public async Task<bool> IsCartBadgeVisibleAsync()
+    {
+        return await ShoppingCartBadge.IsVisibleAsync();
+    }
+
+    /// <summary>
+    /// Gets the number of items in the shopping cart.
+    /// </summary>
+    /// <returns></returns>
+    public async Task<int> GetCartItemCountAsync()
+    {
+        string badgeText =
+            await GetTextAsync(ShoppingCartBadge);
+
+        return int.Parse(badgeText);
+    }
+
+    /// <summary>
+    /// Gets the product container for the specified product name.
+    /// </summary>
+    /// <param name="productName"></param>
+    /// <returns></returns>
+    private ILocator GetProductContainer(string productName) =>
+        Page.Locator(".inventory_item")
+            .Filter(new() { HasText = productName });
+
+    /// <summary>
+    /// Adds the specified product to the shopping cart.
+    /// </summary>
+    /// <param name="productName"></param>
+    /// <returns></returns>
+    public async Task AddProductToCartAsync(string productName)
+    {
+        ILocator product =
+            GetProductContainer(productName);
+
+        await ClickAsync(
+            product.Locator("button"));
+    }
+
+    /// <summary>
+    /// Removes the specified product from the shopping cart.
+    /// </summary>
+    /// <param name="productName"></param>
+    /// <returns></returns>
+    public async Task RemoveProductFromCartAsync(string productName)
+    {
+        ILocator product =
+            GetProductContainer(productName);
+
+        await ClickAsync(
+            product.Locator("button"));
     }
 }
