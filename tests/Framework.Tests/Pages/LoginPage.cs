@@ -41,9 +41,7 @@ public sealed class LoginPage : BasePage
         return await LoginButton.IsVisibleAsync();
     }
 
-    public async Task LoginAsync(
-        string username,
-        string password)
+    public async Task<InventoryPage> LoginAsync(string username, string password)
     {
         await FillAsync(
             UserNameTextBox,
@@ -54,5 +52,6 @@ public sealed class LoginPage : BasePage
             password);
 
         await ClickAsync(LoginButton);
+        return new InventoryPage(Page);
     }
 }

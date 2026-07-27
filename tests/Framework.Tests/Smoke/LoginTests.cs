@@ -30,11 +30,10 @@ public sealed class LoginTests : BaseTest
 
         var loginPage = new LoginPage(BrowserSession.Page);
 
-        await loginPage.LoginAsync(
-            LoginUsers.Standard.Username,
-            LoginUsers.Standard.Password);
-
-        var inventoryPage = new InventoryPage(BrowserSession.Page);
+        var inventoryPage =
+            await loginPage.LoginAsync(
+                LoginUsers.Standard.Username,
+                LoginUsers.Standard.Password);
 
         Assert.That(
             await inventoryPage.IsLoadedAsync(),
