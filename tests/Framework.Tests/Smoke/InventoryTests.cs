@@ -62,6 +62,10 @@ public sealed class InventoryTests : BaseTest
         });
     }
 
+    /// <summary>
+    /// Verifies that a product can be removed from the shopping cart.
+    /// </summary>
+    /// <returns></returns>
     [Test]
     public async Task Should_Remove_Product_From_Cart()
     {
@@ -86,6 +90,10 @@ public sealed class InventoryTests : BaseTest
             "The shopping cart badge should not be visible after removing the only product.");
     }
 
+    /// <summary>
+    /// Verifies that multiple products can be added to the shopping cart and that the badge count is correct.
+    /// </summary>
+    /// <returns></returns>
     [Test]
     public async Task Should_Add_Multiple_Products_To_Cart()
     {
@@ -110,6 +118,10 @@ public sealed class InventoryTests : BaseTest
             "The shopping cart badge should display the correct number of products.");
     }
 
+    /// <summary>
+    /// Verifies that the shopping cart can be opened from the inventory page.
+    /// </summary>
+    /// <returns></returns>
     [Test]
     public async Task Should_Open_Shopping_Cart()
     {
@@ -117,13 +129,106 @@ public sealed class InventoryTests : BaseTest
         var inventoryPage =
             await LoginToInventoryAsync();
 
+        CartPage cartPage =
+            await inventoryPage.OpenShoppingCartAsync();
+
+        Assert.That(
+            await cartPage.IsLoadedAsync(),
+            Is.True,
+            "The shopping cart page should be displayed.");
+    }
+
+    /// <summary>
+    /// Verifies that an added product is displayed in the shopping cart.
+    /// </summary>
+    [Test]
+    public async Task Should_Display_Added_Product_In_Cart()
+    {
+        // Arrange
+        var inventoryPage =
+            await LoginToInventoryAsync();
+
         // Act
-        await inventoryPage.OpenShoppingCartAsync();
+        await inventoryPage.AddProductToCartAsync(
+            Products.Backpack);
+
+        var cartPage =
+            await inventoryPage.OpenShoppingCartAsync();
+
+        bool containsProduct =
+            await cartPage.ContainsProductAsync(
+                Products.Backpack);
 
         // Assert
         Assert.That(
-            BrowserSession.Page.Url,
-            Does.Contain("/cart"),
-            "The shopping cart page should be displayed.");
+            containsProduct,
+            Is.True,
+            "The added product should be displayed in the shopping cart.");
+    }
+
+    /// <summary>
+    /// Verifies that a product can be removed from the shopping cart.  
+    /// </summary>
+    [Test]
+    public async Task Should_Remove_Product_From_Cart_Page()
+    {
+        // Arrange
+        var inventoryPage =
+            await LoginToInventoryAsync();
+
+        await inventoryPage.AddProductToCartAsync(
+            Products.Backpack);
+
+        var cartPage =
+            await inventoryPage.OpenShoppingCartAsync();
+
+        // Act
+        await cartPage.RemoveProductAsync(
+            Products.Backpack);
+
+        bool containsProduct =
+            await cartPage.ContainsProductAsync(
+                Products.Backpack);
+
+        bool isEmpty =
+            await cartPage.IsEmptyAsync();
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(
+                containsProduct,
+                Is.False,
+                "The removed product should no longer be displayed.");
+
+            Assert.That(
+                isEmpty,
+                Is.True,
+                "The shopping cart should be empty.");
+        });
+    }
+
+    /// <summary>
+    /// Verifies that the user can return to the inventory page.
+    /// </summary>
+    [Test]
+    public async Task Should_Continue_Shopping()
+    {
+        // Arrange
+        var inventoryPage =
+            await LoginToInventoryAsync();
+
+        var cartPage =
+            await inventoryPage.OpenShoppingCartAsync();
+
+        // Act
+        inventoryPage =
+            await cartPage.ContinueShoppingAsync();
+
+        // Assert
+        Assert.That(
+            await inventoryPage.IsLoadedAsync(),
+            Is.True,
+            "The inventory page should be displayed after continuing shopping.");
     }
 }

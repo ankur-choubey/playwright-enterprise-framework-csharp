@@ -44,9 +44,11 @@ public sealed class InventoryPage : BasePage
     /// Opens the shopping cart page.
     /// </summary>
     /// <returns></returns>
-    public async Task OpenShoppingCartAsync()
+    public async Task<CartPage> OpenShoppingCartAsync()
     {
         await ClickAsync(ShoppingCartLink);
+
+        return new CartPage(Page);
     }
 
     /// <summary>
